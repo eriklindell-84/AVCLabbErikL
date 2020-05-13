@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Product>
+@{
+        ViewData["Title"] = "Cart";
+}
+
+<div class="text-center">
+    <h1 class="display-4" justify-content-start">The Cart:</h1>
+
+</div>
+
+<div class="d-flex flex-wrap">
+    <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-bottom:10px;">
+        <p></p>
+    </div>
+    @foreach (var item in Model)
+    {
+        <form method="post">
+            <div class="card" style="margin:5px; box-shadow:2px;">
+                <img class="card-img-top" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
+                <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
+                    <ul class="list-group list-group-flush">
+
+
+                        <li class="list-group-item form-group" style="display:none" name="Id" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Id)</li>
+                        <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
+
+                        <li class="list-group-item" name="name">@item.Name</li>
+
+                        <li class="list-group-item" name="description">@item.Description</li>
+
+                        <li class="list-group-item" name="price">@item.Price</li>
+                    </ul>
+                    <button class="btn-success" type="submit" style="box-shadow:none; border-radius:5px" name="Remove" asp-action="Remove">Remove</button>
+                </div>
+            </div>
+        </form>
+    }
+    <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-top:10px;">
+        <p></p>
+        <div class="align-content-lg-end col-12" ; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif;">
+            <form method="post">
+                <button class="btn-danger justify-content-start" type="submit" style="box-shadow:none; border-radius:5px" name="RemoveAll" asp-controller="Home" asp-action="RemoveAll">Empty Cart</button>
+            </form>
+                <p>To Pay: @AVCLabbErikL.Controllers.HomeController.totalAmount</p>
+</div>
+    </div>
+
+

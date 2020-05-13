@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4" justify-content-start">Welcome to PicShop</h1>
+
+</div>
+
+<div class="d-flex flex-wrap">
+
+    @foreach (var item in Model)
+    {
+        <form method="post">
+            <div class="card" style="margin:5px; box-shadow:2px;">
+                <img class="card-img-top form-group" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
+                <input value="@Html.DisplayFor(modelItem => item.ImgUrl)" type="hidden" name="imgUrl" />
+                <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item form-group" style="display:none" name="Id" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Id)</li>
+                        <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
+
+                        <li class="list-group-item form-group" name="Name" value="@Html.DisplayFor(modelItem => item.Name)">@Html.DisplayFor(modelItem => item.Name)</li>
+                        <input value="@Html.DisplayFor(modelItem => item.Name)" type="hidden" name="Name" />
+
+                        <li class="list-group-item form-group" name="Description" value="@Html.DisplayFor(modelItem => item.Description)">@Html.DisplayFor(modelItem => item.Description)</li>
+                        <input value="@Html.DisplayFor(modelItem => item.Description)" type="hidden" name="Description" />
+
+                        <li class="list-group-item form-group" name="Price" value="@Html.DisplayFor(modelItem => item.Price)">@Html.DisplayFor(modelItem => item.Price)</li>
+                        <input value="@Html.DisplayFor(modelItem => item.Price)" type="hidden" name="Price" />
+                        <button class="btn-success" type="submit" border-radius:5px" name="Buy" asp-action="Buy">Buy</button>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
