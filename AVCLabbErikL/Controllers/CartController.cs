@@ -11,13 +11,7 @@ namespace AVCLabbErikL.Controllers
     {
         //public List<Product> cartList = new List<Product>();
 
-        public IActionResult ConfirmOrder()
-        {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                return View("DoneOrder");
-            }
-        }
+        
 
 
     }

@@ -63,9 +63,18 @@
     <form method="post">
         <button class="btn-danger" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" name="RemoveAll" asp-controller="Home" asp-action="RemoveAll"><img src="../pic/trash-alt-regular.svg" height="20px;" /> Empty Cart</button>
     </form>
-    <form>
-        <button class="btn-success" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" name="ConfirmOrder" asp-controller="Home"><img src="../pic/credit-card-solid.svg" height="20px;" /> Place Order</button>
-    </form>
-    <p> To Pay: @AVCLabbErikL.Controllers.HomeController.totalAmount</p>
+
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <form method="post">
+                    <button class="btn-success" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" asp-controller="Home" asp-action="ConfirmOrder"><img src="../pic/credit-card-solid.svg" height="20px;" /> Place Order</button>
+                </form>
+            }
+            else
+            {
+                <a class="btn-success" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" asp-area="Identity" asp-page="/Account/Login"><img src="../pic/credit-card-solid.svg" height="20px;" />Place Order</a>
+            }
+            <p> To Pay: @AVCLabbErikL.Controllers.HomeController.totalAmount</p>
 </div>
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AVCLabbErikL.Models;
 using AVCLabbErikL.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace AVCLabbErikL.Controllers
 {
@@ -14,6 +15,8 @@ namespace AVCLabbErikL.Controllers
     {
 
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         // List of the products
         public List<ProductModel> productList = new List<ProductModel>();
@@ -24,9 +27,11 @@ namespace AVCLabbErikL.Controllers
         // varibale to store total amount to pay
         public static double totalAmount;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -86,7 +91,7 @@ namespace AVCLabbErikL.Controllers
             {
                 if (product.Id != 0)
                 {
-                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1});
+                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
 
                     var cart = from e in cartList
 
@@ -116,7 +121,7 @@ namespace AVCLabbErikL.Controllers
 
                 // Get Id of product for which to remove price and romve the cost from Cart Total Price.
                 double RemoveValue = cart.Where(p => p.Id == product.Id).Sum(x => x.Price);
-                
+
                 if (totalAmount > 0)
                 {
                     totalAmount -= RemoveValue;
@@ -201,14 +206,25 @@ namespace AVCLabbErikL.Controllers
             }
         }
 
-        public IActionResult Cart()
+        public IActionResult ConfirmOrder()
         {
-            return View();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var cart = from e in cartList
+                               select e;
+
+                return View("DoneOrder", cart);
+            }
         }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
+            //public IActionResult Cart()
+            //{
+            //    return View();
+            //}
+            public IActionResult Privacy()
+            {
+                return View();
+            }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

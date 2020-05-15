@@ -8,6 +8,8 @@ namespace AVCLabbErikL.Models
 {
     public class CartItem
     {
+        [Key]
+        public int RowId { get; set; }
         public virtual OrderModel Orders { get; set; }
         public virtual ProductModel Products { get; set; }
         public int ProductId { get; set; }
