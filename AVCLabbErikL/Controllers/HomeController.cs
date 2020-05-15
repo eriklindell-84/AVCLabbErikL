@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using AVCLabbErikL.Models;
 using AVCLabbErikL.Data;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace AVCLabbErikL.Controllers
 {
@@ -23,6 +24,7 @@ namespace AVCLabbErikL.Controllers
 
         // List of the items in shopping cart
         public static List<ProductModel> cartList = new List<ProductModel>();
+        public static List<ProductModel> orderList = new List<ProductModel>();
 
         // varibale to store total amount to pay
         public static double totalAmount;
@@ -210,17 +212,30 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                OrderModel om = new OrderModel();
+                
                 var cart = from e in cartList
                                select e;
+                foreach(var item in cart)
+                {
+                    Random random = new Random();
 
-                return View("DoneOrder", cart);
+                    om.Id = random.Next(1, 5000);
+                    om.OrderAmount = totalAmount;
+                    om.OrderDate = DateTime.Now;
+                    om.UserID = Guid.Parse(signedInUserID);
+
+                }
+                db.Add(om);
+                db.SaveChanges();
+                cartList.Clear();
+                totalAmount = 0;
+
             }
+            return View("DoneOrder");
         }
 
-            //public IActionResult Cart()
-            //{
-            //    return View();
-            //}
             public IActionResult Privacy()
             {
                 return View();
