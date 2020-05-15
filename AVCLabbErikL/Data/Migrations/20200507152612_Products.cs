@@ -22,6 +22,7 @@ namespace AVCLabbErikL.Data.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                 });
+            
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,48 +1,71 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<ProductModel>
 @{
-        ViewData["Title"] = "Cart";
+    ViewData["Title"] = "Cart";
 }
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
+<script src="https://use.fontawesome.com/c293fcd665.js"></script>
 <div class="text-center">
     <h1 class="display-4" justify-content-start">The Cart:</h1>
-
 </div>
-
 <div class="d-flex flex-wrap">
     <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-bottom:10px;">
         <p></p>
     </div>
+
     @foreach (var item in Model)
     {
         <form method="post">
+            <div></div>
             <div class="card" style="margin:5px; box-shadow:2px;">
                 <img class="card-img-top" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
                 <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
                     <ul class="list-group list-group-flush">
-
-
                         <li class="list-group-item form-group" style="display:none" name="Id" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Id)</li>
-                        <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
 
                         <li class="list-group-item" name="name">@item.Name</li>
 
                         <li class="list-group-item" name="description">@item.Description</li>
 
                         <li class="list-group-item" name="price">@item.Price</li>
+
+                        <li class="list-group-item" name="add">
+                            <button class="btn-outline-danger" type="submit" name="Subtract" asp-action="SubtractOne">
+                                <img src="../pic/minus-square-solid.svg" height="20px;" />
+                            </button>
+                            Quantity:
+                            <p>@Html.DisplayFor(modelItem => item.Quantity)</p>
+                            <button class="btn-outline-success" type="submit" name="Add" asp-action="AddOne">
+                                <img src="../pic/plus-square-solid.svg" height="20px;" />
+                            </button>
+                        </li>
+
+                        <li class="list-group-item">
+                            <button class="btn-outline-dark" type="submit" style="box-shadow:none; border-radius:5px" name="Remove" asp-action="Remove"><img src="../pic/window-close-solid.svg" height="20px;" />Remove</button>
+                        </li>
                     </ul>
-                    <button class="btn-success" type="submit" style="box-shadow:none; border-radius:5px" name="Remove" asp-action="Remove">Remove</button>
+                    <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
                 </div>
             </div>
         </form>
-    }
-    <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-top:10px;">
-        <p></p>
-        <div class="align-content-lg-end col-12" ; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif;">
-            <form method="post">
-                <button class="btn-danger justify-content-start" type="submit" style="box-shadow:none; border-radius:5px" name="RemoveAll" asp-controller="Home" asp-action="RemoveAll">Empty Cart</button>
-            </form>
-                <p>To Pay: @AVCLabbErikL.Controllers.HomeController.totalAmount</p>
-</div>
-    </div>
 
+
+    }
+</div>
+
+
+<div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-top:10px; margin-bottom:10px;">
+    <p></p>
+</div>
+<div class="d-flex flex-wrap justify-content-end">
+    <form method="post">
+        <button class="btn-danger" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" name="RemoveAll" asp-controller="Home" asp-action="RemoveAll"><img src="../pic/trash-alt-regular.svg" height="20px;" /> Empty Cart</button>
+    </form>
+    <form>
+        <button class="btn-success" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" name="ConfirmOrder" asp-controller="Home"><img src="../pic/credit-card-solid.svg" height="20px;" /> Place Order</button>
+    </form>
+    <p> To Pay: @AVCLabbErikL.Controllers.HomeController.totalAmount</p>
+</div>
 

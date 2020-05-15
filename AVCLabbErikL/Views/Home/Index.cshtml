@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<ProductModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -30,7 +30,7 @@
 
                         <li class="list-group-item form-group" name="Price" value="@Html.DisplayFor(modelItem => item.Price)">@Html.DisplayFor(modelItem => item.Price)</li>
                         <input value="@Html.DisplayFor(modelItem => item.Price)" type="hidden" name="Price" />
-                        <button class="btn-success" type="submit" border-radius:5px" name="Buy" asp-action="Buy">Buy</button>
+                        <button class="btn-success" type="submit" name="Buy" asp-action="Buy" style="font-size: 1rem; color: white; border-radius: 2px; font-family: Arial, Helvetica, sans-serif;"><i class="fas fa-cart-arrow-down"></i>Add to Cart</button>
                     </ul>
                 </div>
             </div>

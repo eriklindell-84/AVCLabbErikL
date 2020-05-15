@@ -32,14 +32,11 @@ namespace AVCLabbErikL
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultUI();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //.AddDefaultUI()
-            //.AddEntityFrameworkStores<ApplicationDbContext>()
-            //.AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,14 +68,6 @@ namespace AVCLabbErikL
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                     endpoints.MapRazorPages();
             });
-            //app.UseEndpoints(endpoints =>
-            //{
-
-            //    endpoints.MapControllerRoute(
-            //        name: "Cart",
-            //        pattern: "{controller=CartController}/{action=Index}/{id?}");
-            //    endpoints.MapRazorPages();
-            //});
         }
     }
 }

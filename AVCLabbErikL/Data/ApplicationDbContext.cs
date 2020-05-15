@@ -13,6 +13,7 @@ namespace AVCLabbErikL.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+           
         }
 
         public ApplicationDbContext()
@@ -23,9 +24,11 @@ namespace AVCLabbErikL.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = AvcErikL; Trusted_Connection = True;");
+                optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = AVCErikL; Trusted_Connection = True;");
             }
         }
-        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductModel> Products { get; set; }
+        public virtual DbSet<OrderModel> Orders { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
     }
 }
