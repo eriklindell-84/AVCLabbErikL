@@ -40,25 +40,25 @@ namespace AVCLabbErikL.Controllers
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 ProductModel prod1 = new ProductModel()
-                { Id = 1, Name = "Photo1", Description = "beatufil picture by:", Price = 299.95, ImgUrl = "https://i.picsum.photos/id/145/200/300.jpg" };
+                { Id = 1, Name = "Photo1", Description = "beatufil picture by:", Price = 299, ImgUrl = "https://i.picsum.photos/id/145/200/300.jpg" };
                 ProductModel prod2 = new ProductModel()
-                { Id = 2, Name = "Photo2", Description = "beatufil picture by:", Price = 249.95, ImgUrl = "https://i.picsum.photos/id/200/200/300.jpg" };
+                { Id = 2, Name = "Photo2", Description = "beatufil picture by:", Price = 249.5, ImgUrl = "https://i.picsum.photos/id/200/200/300.jpg" };
                 ProductModel prod3 = new ProductModel()
-                { Id = 3, Name = "Photo3", Description = "beatufil picture by:", Price = 179.95, ImgUrl = "https://i.picsum.photos/id/225/200/300.jpg" };
+                { Id = 3, Name = "Photo3", Description = "beatufil picture by:", Price = 179.5, ImgUrl = "https://i.picsum.photos/id/225/200/300.jpg" };
                 ProductModel prod4 = new ProductModel()
-                { Id = 4, Name = "Photo4", Description = "beatufil picture by:", Price = 349.95, ImgUrl = "https://i.picsum.photos/id/240/200/300.jpg" };
+                { Id = 4, Name = "Photo4", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/240/200/300.jpg" };
                 ProductModel prod5 = new ProductModel()
-                { Id = 5, Name = "Photo5", Description = "beatufil picture by:", Price = 129.95, ImgUrl = "https://i.picsum.photos/id/199/200/300.jpg" };
+                { Id = 5, Name = "Photo5", Description = "beatufil picture by:", Price = 129.5, ImgUrl = "https://i.picsum.photos/id/199/200/300.jpg" };
                 ProductModel prod6 = new ProductModel()
-                { Id = 6, Name = "Photo6", Description = "beatufil picture by:", Price = 349.95, ImgUrl = "https://i.picsum.photos/id/175/200/300.jpg" };
+                { Id = 6, Name = "Photo6", Description = "beatufil picture by:", Price = 349.5, ImgUrl = "https://i.picsum.photos/id/175/200/300.jpg" };
                 ProductModel prod7 = new ProductModel()
-                { Id = 7, Name = "Photo7", Description = "beatufil picture by:", Price = 129.95, ImgUrl = "https://i.picsum.photos/id/270/200/300.jpg" };
+                { Id = 7, Name = "Photo7", Description = "beatufil picture by:", Price = 129, ImgUrl = "https://i.picsum.photos/id/270/200/300.jpg" };
                 ProductModel prod8 = new ProductModel()
-                { Id = 8, Name = "Photo8", Description = "beatufil picture by:", Price = 349.95, ImgUrl = "https://i.picsum.photos/id/300/200/300.jpg" };
+                { Id = 8, Name = "Photo8", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/300/200/300.jpg" };
                 ProductModel prod9 = new ProductModel()
-                { Id = 9, Name = "Photo9", Description = "beatufil picture by:", Price = 99.95, ImgUrl = "https://i.picsum.photos/id/284/200/300.jpg" };
+                { Id = 9, Name = "Photo9", Description = "beatufil picture by:", Price = 99.5, ImgUrl = "https://i.picsum.photos/id/284/200/300.jpg" };
                 ProductModel prod10 = new ProductModel()
-                { Id = 10, Name = "Photo10", Description = "beatufil picture by:", Price = 149.95, ImgUrl = "https://i.picsum.photos/id/198/200/300.jpg" };
+                { Id = 10, Name = "Photo10", Description = "beatufil picture by:", Price = 149, ImgUrl = "https://i.picsum.photos/id/198/200/300.jpg" };
 
 
 
@@ -85,21 +85,21 @@ namespace AVCLabbErikL.Controllers
         }
 
         // Add Product to Cart and add its Price to TotalSum
-        public IActionResult Buy(ProductModel product)
+        public IActionResult Buy(ProductModel product, double total)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 if (product.Id != 0)
                 {
-                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
-
+                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1});
+                    totalAmount = total;
                     var cart = from e in cartList
-
                                select e;
-                    totalAmount = 0;
-                    foreach (var item in cartList)
+                    
+                    foreach (var item in cart)
                     {
-                        totalAmount += item.Price;
+                        totalAmount += item.Price * item.Quantity;
+                       
                     }
                 }
             }
@@ -114,26 +114,24 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                // get cart items
+
+                //Get the specific product by id
                 var cart = from e in cartList
-                           .Where(p => p.Id == product.Id)
+                               .Where(e => e.Id == product.Id)
                            select e;
+                
+                // Remove 1x price per quantity in bag
+                foreach (var item in cart)
+                {
+                    totalAmount -= item.Price * item.Quantity;
+                }
 
                 // Get Id of product for which to remove price and romve the cost from Cart Total Price.
                 double RemoveValue = cart.Where(p => p.Id == product.Id).Sum(x => x.Price);
 
-                if (totalAmount > 0)
-                {
-                    totalAmount -= RemoveValue;
-                }
                 //Remove the actual product from the cart
                 var RemoveFromCart = cartList.FirstOrDefault(r => r.Id == product.Id);
                 cartList.Remove(RemoveFromCart);
-
-
-
-                ////When products are removed with remove button
-                //product.Quantity = 0;
 
                 return View("Cart", cartList);
             }

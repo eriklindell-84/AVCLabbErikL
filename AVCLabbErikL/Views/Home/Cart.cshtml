@@ -32,14 +32,15 @@
                         <li class="list-group-item" name="price">@item.Price</li>
 
                         <li class="list-group-item" name="add">
-                            <button class="btn-outline-danger" type="submit" name="Subtract" asp-action="SubtractOne">
+                            <div class="d-flex flex-wrap d-inline" style="text-align:center">
+                            <button class="btn btn-light-green" type="submit" name="Subtract" asp-action="SubtractOne">
                                 <img src="../pic/minus-square-solid.svg" height="20px;" />
                             </button>
-                            Quantity:
-                            <p>@Html.DisplayFor(modelItem => item.Quantity)</p>
-                            <button class="btn-outline-success" type="submit" name="Add" asp-action="AddOne">
+                            <p style="max-height:inherit;">@Html.DisplayFor(modelItem => item.Quantity)</p>
+                            <button class="btn btn-light-green" type="submit" name="Add" asp-action="AddOne">
                                 <img src="../pic/plus-square-solid.svg" height="20px;" />
                             </button>
+                            </div>
                         </li>
 
                         <li class="list-group-item">
