@@ -155,16 +155,21 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var productQuantity = from p in cartList
-                                      .Where(p => p.Id == product.Id)
-                                      select p.Quantity;
+                //Get item Quantity and Add one to it for this product id
+                var cart = from e in cartList
+                               .Where(e => e.Id == product.Id)
+                           select e;
 
-                //product.Quantity = Convert.ToInt32(productQuantity);
+                foreach (var item in cart)
+                {
+                    item.Quantity += 1;
+                }
+                
 
-                product.Quantity++;
-
+                // Get Value of Item Price
                 double AddValue = cartList.Where(p => p.Id == product.Id).Sum(x => x.Price);
 
+                // Add item price to Total Amount
                 totalAmount += AddValue;
 
                 return View("Cart", cartList);
@@ -177,31 +182,28 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-
+                //Get the specific product by id
                 var cart = from e in cartList
                                .Where(e => e.Id == product.Id)
                            select e;
 
+                //Get the Price of the product that's rmeoved
+                double RemoveValue = cart.Where(p => p.Id == product.Id).Sum(x => x.Price);
+
                 // Check if quantity of product is greater then 0, if so remove 1
-                if (product.Quantity > 0)
+                //Only removes from total is quntity is greater then 0
+                foreach (var item in cart)
                 {
-                    product.Quantity -= 1;
+                    if (item.Quantity > 0)
+                    {
+                        item.Quantity -= 1;
+                        totalAmount -= RemoveValue;
+                    }
                 }
-
-
-                double RemoveValue = cartList.Where(p => p.Id == product.Id).Sum(x => x.Price);
-
-                //check if value of Totalsum is greate then 0, then remove value
-                if (totalAmount >= 0)
-                {
-                    totalAmount -= RemoveValue;
-                }
-                //Set total value if it should pass below 0
                 if (totalAmount < 0)
                 {
                     totalAmount = 0;
                 }
-
                 return View("Cart", cartList);
             }
         }
