@@ -25,6 +25,7 @@ namespace AVCLabbErikL.Controllers
         // List of the items in shopping cart
         public static List<ProductModel> cartList = new List<ProductModel>();
         public static List<ProductModel> orderList = new List<ProductModel>();
+        public static List<OrderModel> getOrdersList = new List<OrderModel>();
 
         // varibale to store total amount to pay
         public static double totalAmount;
@@ -93,15 +94,15 @@ namespace AVCLabbErikL.Controllers
             {
                 if (product.Id != 0)
                 {
-                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1});
+                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
                     totalAmount = total;
                     var cart = from e in cartList
                                select e;
-                    
+
                     foreach (var item in cart)
                     {
                         totalAmount += item.Price * item.Quantity;
-                       
+
                     }
                 }
             }
@@ -121,7 +122,7 @@ namespace AVCLabbErikL.Controllers
                 var cart = from e in cartList
                                .Where(e => e.Id == product.Id)
                            select e;
-                
+
                 // Remove 1x price per quantity in bag
                 foreach (var item in cart)
                 {
@@ -164,7 +165,7 @@ namespace AVCLabbErikL.Controllers
                 {
                     item.Quantity += 1;
                 }
-                
+
 
                 // Get Value of Item Price
                 double AddValue = cartList.Where(p => p.Id == product.Id).Sum(x => x.Price);
@@ -207,17 +208,30 @@ namespace AVCLabbErikL.Controllers
                 return View("Cart", cartList);
             }
         }
-
+        [HttpPost]
         public IActionResult ConfirmOrder()
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 OrderModel om = new OrderModel();
-                
+
+                var orders = from o in db.Orders
+                                 .Where(o => o.UserID == Guid.Parse(signedInUserID))
+                                 .OrderByDescending(o => o.OrderDate)
+                                 .Take(1)
+                             select o;
+
+                foreach (var item in orders)
+                {
+                    getOrdersList.Add(item);
+                }
+
+
+
                 var cart = from e in cartList
-                               select e;
-                foreach(var item in cart)
+                           select e;
+                foreach (var item in cart)
                 {
                     Random random = new Random();
 
@@ -232,14 +246,39 @@ namespace AVCLabbErikL.Controllers
                 cartList.Clear();
                 totalAmount = 0;
 
+                return View("DoneOrder", getOrdersList);
             }
-            return View("DoneOrder");
         }
 
-            public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult GetOrders()
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                return View();
+                var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                OrderModel om = new OrderModel();
+
+                var orders = from o in db.Orders
+                                 .Where(o => o.UserID == Guid.Parse(signedInUserID))
+                             select o;
+
+                foreach (var item in orders)
+                {
+                    getOrdersList.Add(item);
+                }
+
+
+
+                return View("DoneOrder", getOrdersList);
             }
+        }
+
+
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
