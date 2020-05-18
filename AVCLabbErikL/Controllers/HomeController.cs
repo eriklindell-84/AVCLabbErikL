@@ -134,7 +134,15 @@ namespace AVCLabbErikL.Controllers
 
             return View("Cart", cartList);
         }
+        public IActionResult ShowCart()
+        {
+            if(cartList.Count != 0)
+            {
+                RedirectToAction("Buy");
+            }
+            return View("Cart", cartList);
 
+        }
 
         // Remove Product from Cart and Remove its Value from Total Sum
         [HttpPost]
@@ -238,24 +246,32 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
+
+                // Logic for creating an Order //
+
+                // get the signed in user id
                 var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 OrderModel om = new OrderModel();
 
+                // Get the most recent order for the signed in user
                 var orders = from o in db.Orders
                                  .Where(o => o.UserID == Guid.Parse(signedInUserID))
                                  .OrderByDescending(o => o.OrderDate)
                                  .Take(1)
                              select o;
 
+                // Add item to the getOrderList(To be displayed once the order is completed)
                 foreach (var item in orders)
                 {
                     getOrdersList.Add(item);
                 }
 
-
-
+                // Grab all items from cartlist
                 var cart = from e in cartList
                            select e;
+
+
+                // Set values for the Order
                 foreach (var item in cart)
                 {
                     Random random = new Random();
@@ -266,8 +282,11 @@ namespace AVCLabbErikL.Controllers
                     om.UserID = Guid.Parse(signedInUserID);
 
                 }
+                // Add order and save it to db
                 db.Add(om);
                 db.SaveChanges();
+
+                //clear the cart after order and set totalamont to 0
                 cartList.Clear();
                 totalAmount = 0;
 
@@ -280,6 +299,7 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                // Get orders for the signed in User
                 var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 OrderModel om = new OrderModel();
 
@@ -293,7 +313,7 @@ namespace AVCLabbErikL.Controllers
                 }
 
 
-
+                //Return all Orders for signed in User
                 return View("DoneOrder", getOrdersList);
             }
         }
