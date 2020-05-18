@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AVCLabbErikL.Models;
+using AVCLabbErikL.Areas.Identity.Pages.Account.Manage;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +31,8 @@ namespace AVCLabbErikL.Data
 
         public virtual DbSet<ProductModel> Products { get; set; }
         public virtual DbSet<OrderModel> Orders { get; set; }
+        public virtual DbSet<Adress> Adresses { get; set; }
 
-        
+
     }
 }

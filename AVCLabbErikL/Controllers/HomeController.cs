@@ -9,6 +9,7 @@ using AVCLabbErikL.Models;
 using AVCLabbErikL.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using AVCLabbErikL.Areas.Identity.Pages.Account.Manage;
 
 namespace AVCLabbErikL.Controllers
 {
@@ -26,6 +27,7 @@ namespace AVCLabbErikL.Controllers
         public static List<ProductModel> cartList = new List<ProductModel>();
         public static List<ProductModel> orderList = new List<ProductModel>();
         public static List<OrderModel> getOrdersList = new List<OrderModel>();
+        public static List<Adress> adressList = new List<Adress>();
 
         // varibale to store total amount to pay
         public static double totalAmount;
@@ -92,17 +94,40 @@ namespace AVCLabbErikL.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                if (product.Id != 0)
+                // Check if product excist in the cart already
+                var ExcistInCart = cartList.Where(p => p.Id == product.Id);
+
+                // If product don't excist add the product to cart
+                if (ExcistInCart.Count() == 0)
                 {
                     cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
+                    
                     totalAmount = total;
                     var cart = from e in cartList
                                select e;
-
+                    // Adjust total amount in regards to how many on the item is in cart.
                     foreach (var item in cart)
                     {
                         totalAmount += item.Price * item.Quantity;
 
+                    }
+
+                }
+                else
+                {
+                    // If product excist, add 1 to quantity instead óf adding another card to the shopping cart.
+                    
+                    // define what item is going to be modified
+                    var cart = from e in cartList
+                                .Where(p => p.Id == product.Id)
+                               select e;
+                    
+                    // select the item and add 1 to quantity and it's price to Total Amount
+                    cart.Take(1).Where(p => p.Id.Equals(product.Id));
+                    foreach (var item in cart)
+                    {
+                        item.Quantity++;
+                        totalAmount += product.Price;
                     }
                 }
             }
@@ -284,6 +309,92 @@ namespace AVCLabbErikL.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        [HttpGet]
+        public IActionResult Adress()
+        {
+            adressList.Clear();
+            var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                // If userID don't excist site will not load any userdata
+                var getAdressinfo = from a in db.Adresses
+                                    where a.UserID == Guid.Parse(signedInUserID)
+                                    select a;
+
+                foreach (var item in getAdressinfo)
+                {
+                    Adress adress = new Adress();
+
+                    adress.ID = item.ID;
+                    adress.Street = item.Street;
+                    adress.ZipCode = Convert.ToInt32(item.ZipCode);
+                    adress.City = item.City;
+                    adress.CareOf = item.CareOf;
+                    adress.UserID = item.UserID;
+                    adressList.Add(adress);
+                }
+                return View();
+
+            }
+        }
+        [HttpPost]
+        public IActionResult Adress(string Adress, string CareOf, int ZipCode, string City)
+        {
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                adressList.Clear();
+                Adress adress = new Adress();
+                var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                var checkEmptyAdress = from e in db.Adresses
+                                       select e;
+                if (checkEmptyAdress.Count() == 0)
+                {
+                    adress.isAdressEmpty = true;
+                }
+
+                if (adress.isAdressEmpty == true)
+                {
+
+
+                    var query = from user in db.Adresses
+                                where user.UserID == Guid.Parse(signedInUserID)
+                                select user;
+
+
+                    adress.Street = Adress;
+                    adress.Street = Adress;
+                    adress.CareOf = CareOf;
+                    adress.ZipCode = ZipCode;
+                    adress.City = City;
+                    adress.UserID = Guid.Parse(signedInUserID);
+                    db.Adresses.Add(adress);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var query = from user in db.Adresses
+                                where user.UserID == Guid.Parse(signedInUserID)
+                                select user;
+
+                    foreach (var item in query)
+                    {
+                        item.Street = Adress;
+                        item.CareOf = CareOf;
+                        item.ZipCode = ZipCode;
+                        item.City = City;
+                        item.UserID = Guid.Parse(signedInUserID);
+                    }
+                    db.SaveChanges();
+                }
+
+
+            }
+            return RedirectToAction("Adress");
         }
     }
 }

@@ -14,47 +14,45 @@
     <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-bottom:10px;">
         <p></p>
     </div>
+        @foreach (var item in Model)
+        {
+            <form method="post">
+                <div></div>
+                <div class="card" style="margin:5px; box-shadow:2px;">
+                    <img class="card-img-top" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
+                    <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item form-group" style="display:none" name="Id" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Id)</li>
 
-    @foreach (var item in Model)
-    {
-        <form method="post">
-            <div></div>
-            <div class="card" style="margin:5px; box-shadow:2px;">
-                <img class="card-img-top" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
-                <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item form-group" style="display:none" name="Id" value="@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Id)</li>
+                            <li class="list-group-item" name="name">@item.Name</li>
 
-                        <li class="list-group-item" name="name">@item.Name</li>
+                            <li class="list-group-item" name="description">@item.Description</li>
 
-                        <li class="list-group-item" name="description">@item.Description</li>
+                            <li class="list-group-item" name="price">@item.Price</li>
 
-                        <li class="list-group-item" name="price">@item.Price</li>
+                            <li class="list-group-item" name="add">
+                                <div class="d-flex flex-wrap d-inline" style="text-align:center">
+                                    <button class="btn btn-light-green" type="submit" name="Subtract" asp-action="SubtractOne">
+                                        <img src="../pic/minus-square-solid.svg" height="20px;" />
+                                    </button>
+                                    <p style="max-height:inherit;">@Html.DisplayFor(modelItem => item.Quantity)</p>
+                                    <button class="btn btn-light-green" type="submit" name="Add" asp-action="AddOne">
+                                        <img src="../pic/plus-square-solid.svg" height="20px;" />
+                                    </button>
+                                </div>
+                            </li>
 
-                        <li class="list-group-item" name="add">
-                            <div class="d-flex flex-wrap d-inline" style="text-align:center">
-                            <button class="btn btn-light-green" type="submit" name="Subtract" asp-action="SubtractOne">
-                                <img src="../pic/minus-square-solid.svg" height="20px;" />
-                            </button>
-                            <p style="max-height:inherit;">@Html.DisplayFor(modelItem => item.Quantity)</p>
-                            <button class="btn btn-light-green" type="submit" name="Add" asp-action="AddOne">
-                                <img src="../pic/plus-square-solid.svg" height="20px;" />
-                            </button>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <button class="btn-outline-dark" type="submit" style="box-shadow:none; border-radius:5px" name="Remove" asp-action="Remove"><img src="../pic/window-close-solid.svg" height="20px;" />Remove</button>
-                        </li>
-                    </ul>
-                    <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
+                            <li class="list-group-item">
+                                <button class="btn-outline-dark" type="submit" style="box-shadow:none; border-radius:5px" name="Remove" asp-action="Remove"><img src="../pic/window-close-solid.svg" height="20px;" />Remove</button>
+                            </li>
+                        </ul>
+                        <input value="@Html.DisplayFor(modelItem => item.Id)" type="hidden" name="Id" />
+                    </div>
                 </div>
-            </div>
-        </form>
-
-
-    }
-</div>
+            </form>
+        }
+    
+    </div>
 
 
 <div class="align-content-lg-end col-12" style="background-color: lightslategrey; border-radius: 5px; text-align: right;font-family: Arial, Helvetica, sans-serif; height:1px; margin-top:10px; margin-bottom:10px;">

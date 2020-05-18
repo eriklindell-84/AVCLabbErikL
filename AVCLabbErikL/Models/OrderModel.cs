@@ -8,6 +8,8 @@ namespace AVCLabbErikL.Models
 {
     public class OrderModel
     {
+        public OrderModel()
+        { }
         public int Id { get; set; }
         public Guid UserID { get; set; }
         public DateTime OrderDate { get; set; }
