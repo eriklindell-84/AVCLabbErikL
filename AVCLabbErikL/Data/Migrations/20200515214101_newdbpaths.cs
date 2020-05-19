@@ -18,6 +18,7 @@ namespace AVCLabbErikL.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                    
                 });
         }
 

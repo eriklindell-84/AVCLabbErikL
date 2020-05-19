@@ -15,12 +15,16 @@ namespace AVCLabbErikL.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-           
+
         }
 
         public ApplicationDbContext()
         {
         }
+        public virtual DbSet<ProductModel> Products { get; set; }
+        public virtual DbSet<OrderModel> Orders { get; set; }
+        public virtual DbSet<Adress> Adresses { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -28,11 +32,6 @@ namespace AVCLabbErikL.Data
                 optionsBuilder.UseSqlServer(ConnectionString);
             }
         }
-
-        public virtual DbSet<ProductModel> Products { get; set; }
-        public virtual DbSet<OrderModel> Orders { get; set; }
-        public virtual DbSet<Adress> Adresses { get; set; }
-
-
     }
 }
+
