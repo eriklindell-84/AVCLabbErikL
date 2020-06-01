@@ -19,7 +19,7 @@ namespace AVCLabbErikL.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AVCLabbErikL.Models.Adress", b =>
+            modelBuilder.Entity("AVCLabbErikL.Areas.Identity.Pages.Account.Manage.Adress", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -50,20 +50,16 @@ namespace AVCLabbErikL.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("OrderAmount")
-                        .HasColumnName("OrderAmount")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnName("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserID")
-                        .HasColumnName("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
