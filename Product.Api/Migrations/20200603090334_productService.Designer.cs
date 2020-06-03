@@ -9,7 +9,7 @@ using Product.Api.Data;
 namespace Product.Api.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20200601090451_productService")]
+    [Migration("20200603090334_productService")]
     partial class productService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

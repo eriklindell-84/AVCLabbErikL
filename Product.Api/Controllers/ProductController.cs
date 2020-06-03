@@ -12,9 +12,9 @@ namespace Product.Api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-       ProductRepository pr = new ProductRepository();
-       
-        [HttpGet]<
+        //readonly ProductRepository pr = new ProductRepository();
+        ProductRepository pr = new ProductRepository();
+        [HttpGet]
         public IActionResult GetProducts()
         {
             var productlist = pr.GetProducts();

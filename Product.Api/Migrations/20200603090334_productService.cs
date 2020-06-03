@@ -14,9 +14,9 @@ namespace Product.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
                     ImgUrl = table.Column<string>(nullable: true),
-                    InStock = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

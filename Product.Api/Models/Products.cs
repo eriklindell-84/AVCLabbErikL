@@ -12,6 +12,6 @@ namespace Product.Api.Models
         public string Description { get; set; }
         public double Price { get; set; }
         public string ImgUrl { get; set; }
-        public int InStock { get; set; }
+        public int Quantity { get; set; }
     }
 }
