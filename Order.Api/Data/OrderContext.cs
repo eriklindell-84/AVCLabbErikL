@@ -14,7 +14,7 @@ namespace Order.Api.Data
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
                 base.OnConfiguring(optionsBuilder);
-                optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = ProductService; Trusted_Connection = True;");
+                optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = OrderService; Trusted_Connection = True;");
             }
         }
     }
