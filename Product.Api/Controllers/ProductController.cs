@@ -8,11 +8,10 @@ using Product.Api.Repository;
 
 namespace Product.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Product")]
     [ApiController]
     public class ProductController : ControllerBase
     {
-        //readonly ProductRepository pr = new ProductRepository();
         ProductRepository pr = new ProductRepository();
         [HttpGet]
         public IActionResult GetProducts()

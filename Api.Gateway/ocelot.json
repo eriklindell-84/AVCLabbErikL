@@ -1,0 +1,35 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/Product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 63204
+        }
+      ],
+      "UpstreamPathTemplate": "/Product",
+      "UpstreamHttpMethod": [ "Get" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/Order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Order",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+
+
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:53445"
+  }
+}

@@ -22,7 +22,7 @@ namespace AVCLabbErikL.Controllers
                 // If product don't excist add the product to cart
                 if (ExcistInCart.Count() == 0)
                 {
-                    cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
+                    cartList.Add(new ProductModel(http) { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
 
                     AVCLabbErikL.Controllers.HomeController.totalAmount = total;
                     var cart = from e in cartList

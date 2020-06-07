@@ -8,7 +8,7 @@ using Order.Api.Repository;
 
 namespace Order.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
