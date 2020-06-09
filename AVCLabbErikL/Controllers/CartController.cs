@@ -14,64 +14,60 @@ namespace AVCLabbErikL.Controllers
         // Add Product to Cart and add its Price to TotalSum
         public IActionResult Buy(ProductModel product, double total)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+
+            // Check if product excist in the cart already
+            var ExcistInCart = cartList.Where(p => p.Id == product.Id);
+
+            // If product don't excist add the product to cart
+            if (ExcistInCart.Count() == 0)
             {
-                // Check if product excist in the cart already
-                var ExcistInCart = cartList.Where(p => p.Id == product.Id);
+                cartList.Add(new ProductModel() { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
 
-                // If product don't excist add the product to cart
-                if (ExcistInCart.Count() == 0)
+                AVCLabbErikL.Controllers.HomeController.totalAmount = total;
+                var cart = from e in cartList
+                           select e;
+                // Adjust total amount in regards to how many on the item is in cart.
+                foreach (var item in cart)
                 {
-                    cartList.Add(new ProductModel(http) { Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price, ImgUrl = product.ImgUrl, Quantity = 1 });
-
-                    AVCLabbErikL.Controllers.HomeController.totalAmount = total;
-                    var cart = from e in cartList
-                               select e;
-                    // Adjust total amount in regards to how many on the item is in cart.
-                    foreach (var item in cart)
-                    {
-                        AVCLabbErikL.Controllers.HomeController.totalAmount += item.Price * item.Quantity;
-
-                    }
-
+                    AVCLabbErikL.Controllers.HomeController.totalAmount += item.Price * item.Quantity;
                 }
-                else
+
+            }
+            else
+            {
+                // If product excist, add 1 to quantity instead óf adding another card to the shopping cart.
+
+                // define what item is going to be modified
+                var cart = from e in cartList
+                            .Where(p => p.Id == product.Id)
+                           select e;
+
+                // select the item and add 1 to quantity and it's price to Total Amount
+                cart.Take(1).Where(p => p.Id.Equals(product.Id));
+                foreach (var item in cart)
                 {
-                    // If product excist, add 1 to quantity instead óf adding another card to the shopping cart.
-
-                    // define what item is going to be modified
-                    var cart = from e in cartList
-                                .Where(p => p.Id == product.Id)
-                               select e;
-
-                    // select the item and add 1 to quantity and it's price to Total Amount
-                    cart.Take(1).Where(p => p.Id.Equals(product.Id));
-                    foreach (var item in cart)
-                    {
-                        item.Quantity++;
-                        AVCLabbErikL.Controllers.HomeController.totalAmount += product.Price;
-                    }
+                    item.Quantity++;
+                    AVCLabbErikL.Controllers.HomeController.totalAmount += product.Price;
                 }
             }
-
             return View("Cart", cartList);
-        }
-        public IActionResult ShowCart()
-        {
+
+
+            }
+            public IActionResult ShowCart()
+            {
             if (cartList.Count != 0)
             {
                 RedirectToAction("Buy");
             }
             return View("Cart", cartList);
 
-        }
+            }
 
         // Remove Product from Cart and Remove its Value from Total Sum
         [HttpPost]
         public IActionResult Remove(ProductModel product)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
 
                 //Get the specific product by id
                 var cart = from e in cartList
@@ -93,7 +89,7 @@ namespace AVCLabbErikL.Controllers
 
                 return View("Cart", cartList);
             }
-        }
+        
 
         // Remove All items from shopping cart and Set Total Sum to 0
         public IActionResult RemoveAll()
@@ -136,8 +132,6 @@ namespace AVCLabbErikL.Controllers
         // Removing 1 from quantity of the product
         public IActionResult SubtractOne(ProductModel product)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
                 //Get the specific product by id
                 var cart = from e in cartList
                                .Where(e => e.Id == product.Id)
@@ -163,9 +157,4 @@ namespace AVCLabbErikL.Controllers
                 return View("Cart", cartList);
             }
         }
-
-
-
-
     }
-}

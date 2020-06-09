@@ -20,5 +20,11 @@ namespace Order.Api.Repository
             var order = orderContext.Orders.Where(p => p.Id == Id).FirstOrDefault();
             return order;
         }
+        public void PlaceOrder(Orders order)
+        {
+            orderContext.Add(order);
+            orderContext.SaveChanges();
+            
+        }
     }
 }

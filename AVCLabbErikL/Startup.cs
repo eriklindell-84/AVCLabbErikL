@@ -37,6 +37,13 @@ namespace AVCLabbErikL
             services.AddRazorPages();
             services.AddHttpClient();
 
+
+
+            services.AddHttpClient("GateWayClient", c =>
+            {
+                c.BaseAddress = new Uri("https://localhost:53445/Product");
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,10 +8,13 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200601090329_productService.cs" />
     <Compile Remove="Data\Migrations\20200601090329_productService.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200609163953_midapipost.cs" />
+    <Compile Remove="Data\Migrations\20200609163953_midapipost.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />

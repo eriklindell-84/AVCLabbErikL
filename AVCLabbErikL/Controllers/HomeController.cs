@@ -10,82 +10,95 @@ using AVCLabbErikL.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using AVCLabbErikL.Areas.Identity.Pages.Account.Manage;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace AVCLabbErikL.Controllers
 {
     public class HomeController : Controller
     {
-
+        private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-
+        public IEnumerable<ProductModel> Products { get; private set; }
+        public bool GetProductsError { get; private set; }
+        
         // List of the products
         public List<ProductModel> productList = new List<ProductModel>();
 
         // List of the items in shopping cart
-        
         public static List<ProductModel> orderList = new List<ProductModel>();
         public static List<Adress> adressList = new List<Adress>();
 
         // varibale to store total amount to pay
         public static double totalAmount;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
+            _clientFactory = clientFactory;
+
+        }
+        public async Task OnGet()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                "http://localhost:53445/Product");
+            request.Headers.Add("Accept", "application/json");
+            //request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    Products = await JsonSerializer.DeserializeAsync
+                    <IEnumerable<ProductModel>>(responseStream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    productList = Products.ToList();
+                }
+            }
+            else
+            {
+                GetProductsError = true;
+                Products = Array.Empty<ProductModel>();
+            }
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // Mockdata  for adding products
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                ProductModel prod1 = new ProductModel()
-                { Id = 1, Name = "Photo1", Description = "beatufil picture by:", Price = 299, ImgUrl = "https://i.picsum.photos/id/145/200/300.jpg" };
-                ProductModel prod2 = new ProductModel()
-                { Id = 2, Name = "Photo2", Description = "beatufil picture by:", Price = 249.5, ImgUrl = "https://i.picsum.photos/id/200/200/300.jpg" };
-                ProductModel prod3 = new ProductModel()
-                { Id = 3, Name = "Photo3", Description = "beatufil picture by:", Price = 179.5, ImgUrl = "https://i.picsum.photos/id/225/200/300.jpg" };
-                ProductModel prod4 = new ProductModel()
-                { Id = 4, Name = "Photo4", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/240/200/300.jpg" };
-                ProductModel prod5 = new ProductModel()
-                { Id = 5, Name = "Photo5", Description = "beatufil picture by:", Price = 129.5, ImgUrl = "https://i.picsum.photos/id/199/200/300.jpg" };
-                ProductModel prod6 = new ProductModel()
-                { Id = 6, Name = "Photo6", Description = "beatufil picture by:", Price = 349.5, ImgUrl = "https://i.picsum.photos/id/175/200/300.jpg" };
-                ProductModel prod7 = new ProductModel()
-                { Id = 7, Name = "Photo7", Description = "beatufil picture by:", Price = 129, ImgUrl = "https://i.picsum.photos/id/270/200/300.jpg" };
-                ProductModel prod8 = new ProductModel()
-                { Id = 8, Name = "Photo8", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/300/200/300.jpg" };
-                ProductModel prod9 = new ProductModel()
-                { Id = 9, Name = "Photo9", Description = "beatufil picture by:", Price = 99.5, ImgUrl = "https://i.picsum.photos/id/284/200/300.jpg" };
-                ProductModel prod10 = new ProductModel()
-                { Id = 10, Name = "Photo10", Description = "beatufil picture by:", Price = 149, ImgUrl = "https://i.picsum.photos/id/198/200/300.jpg" };
+            await OnGet();
 
 
+            //ProductModel prod1 = new ProductModel()
 
+            //ProductModel prod2 = new ProductModel()
+            //{ Id = 2, Name = "Photo2", Description = "beatufil picture by:", Price = 249.5, ImgUrl = "https://i.picsum.photos/id/200/200/300.jpg" };
+            //ProductModel prod3 = new ProductModel()
+            //{ Id = 3, Name = "Photo3", Description = "beatufil picture by:", Price = 179.5, ImgUrl = "https://i.picsum.photos/id/225/200/300.jpg" };
+            //ProductModel prod4 = new ProductModel()
+            //{ Id = 4, Name = "Photo4", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/240/200/300.jpg" };
+            //ProductModel prod5 = new ProductModel()
+            //{ Id = 5, Name = "Photo5", Description = "beatufil picture by:", Price = 129.5, ImgUrl = "https://i.picsum.photos/id/199/200/300.jpg" };
+            //ProductModel prod6 = new ProductModel()
+            //{ Id = 6, Name = "Photo6", Description = "beatufil picture by:", Price = 349.5, ImgUrl = "https://i.picsum.photos/id/175/200/300.jpg" };
+            //ProductModel prod7 = new ProductModel()
+            //{ Id = 7, Name = "Photo7", Description = "beatufil picture by:", Price = 129, ImgUrl = "https://i.picsum.photos/id/270/200/300.jpg" };
+            //ProductModel prod8 = new ProductModel()
+            //{ Id = 8, Name = "Photo8", Description = "beatufil picture by:", Price = 349, ImgUrl = "https://i.picsum.photos/id/300/200/300.jpg" };
+            //ProductModel prod9 = new ProductModel()
+            //{ Id = 9, Name = "Photo9", Description = "beatufil picture by:", Price = 99.5, ImgUrl = "https://i.picsum.photos/id/284/200/300.jpg" };
+            //ProductModel prod10 = new ProductModel()
+            //{ Id = 10, Name = "Photo10", Description = "beatufil picture by:", Price = 149, ImgUrl = "https://i.picsum.photos/id/198/200/300.jpg" };
 
-                // Populate the product List
-                productList.Add(prod1);
-                productList.Add(prod2);
-                productList.Add(prod3);
-                productList.Add(prod4);
-                productList.Add(prod5);
-                productList.Add(prod6);
-                productList.Add(prod7);
-                productList.Add(prod8);
-                productList.Add(prod9);
-                productList.Add(prod10);
+            // Show content of productList
+            return View("Index", productList);
 
-                // Get content from ProductList
-                var prodList = from e in productList
-                               select e;
-
-                // Show content of productList
-                return View("Index", prodList);
-            }
         }
 
         public IActionResult Privacy()

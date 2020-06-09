@@ -17,9 +17,13 @@ namespace AVCLabbErikL.Models
         { }
 
         public int ID { get; set; }
+        [PersonalData]
         public string Street { get; set; }
+        [PersonalData]
         public int ZipCode { get; set; }
+        [PersonalData]
         public string CareOf { get; set; }
+        [PersonalData]
         public string City { get; set; }
         public Guid UserID { get; set; }
 

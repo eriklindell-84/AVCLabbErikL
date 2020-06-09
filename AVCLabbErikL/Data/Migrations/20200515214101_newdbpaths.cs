@@ -10,7 +10,7 @@ namespace AVCLabbErikL.Data.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false).Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<string>(nullable: false),
                     OrderDate = table.Column<string>(nullable: false),
                     OrderAmount = table.Column<int>(nullable: false)
