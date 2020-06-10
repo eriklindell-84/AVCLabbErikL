@@ -42,7 +42,12 @@ namespace AVCLabbErikL.Controllers
             _clientFactory = clientFactory;
 
         }
+        public IActionResult ConfirmOrder()
+        {
+            PlaceOrder();
 
+            return View("GetOrders", getOrdersList);
+        }
 
         public async Task OnGet()
         {
@@ -97,11 +102,12 @@ namespace AVCLabbErikL.Controllers
                 om.UserID = Guid.Parse(signedInUserID);
                 postOrderList.Add(om);
             }
+            
 
-            var orderobject = JsonConvert.SerializeObject(om);
+            string orderobject = JsonConvert.SerializeObject(om);
             var content = new StringContent(orderobject, Encoding.UTF8, "application/json");
 
-            await client.PostAsync("http://localhost:53445/PostOrder", content);
+            await client.PostAsync("http://localhost:53445/PlaceOrder", content);
 
             string response = await client.GetStringAsync("http://localhost:53445/Order");
 

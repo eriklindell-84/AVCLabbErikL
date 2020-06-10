@@ -67,7 +67,7 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <form method="post">
-                    <button class="btn-success" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" asp-controller="Order" asp-action="PlaceOrder"><img src="../pic/credit-card-solid.svg" height="20px;" /> Place Order</button>
+                    <button class="btn-success" type="submit" style="box-shadow:none; border:none; border-radius:5px; margin-left:5px; margin-right:5px; width:auto;" asp-controller="Order" asp-action="ConfirmOrder"><img src="../pic/credit-card-solid.svg" height="20px;" /> Place Order</button>
                 </form>
             }
             else

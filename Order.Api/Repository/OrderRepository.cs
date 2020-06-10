@@ -1,4 +1,5 @@
-﻿using Order.Api.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Order.Api.Data;
 using Order.Api.Models;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,7 @@ namespace Order.Api.Repository
         public void PlaceOrder(Orders order)
         {
             orderContext.Add(order);
-            orderContext.SaveChanges();
-            
+            orderContext.SaveChanges();  
         }
     }
 }
