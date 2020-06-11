@@ -16,7 +16,11 @@ namespace Product.Api.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = ProductService; Trusted_Connection = True;");
+
+            
         }
     }
-
 }
+
+
+

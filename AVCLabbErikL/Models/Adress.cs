@@ -28,7 +28,5 @@ namespace AVCLabbErikL.Models
         public Guid UserID { get; set; }
 
         public bool isAdressEmpty;
-
-
     }
 }

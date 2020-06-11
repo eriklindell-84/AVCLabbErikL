@@ -115,8 +115,7 @@ namespace AVCLabbErikL.Controllers
 
             AVCLabbErikL.Controllers.CartController.cartList.Clear();
             AVCLabbErikL.Controllers.HomeController.totalAmount = 0;
-
-            return View("ConfirmOrder", ordersList);  
+            return View("ConfirmOrder", postOrderList); 
         }
     }
 }
