@@ -19,8 +19,8 @@ namespace AVCLabbErikL.Controllers
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUsers> _userManager;
+        private readonly SignInManager<ApplicationUsers> _signInManager;
         public IEnumerable<ProductModel> Products { get; private set; }
         public bool GetProductsError { get; private set; }
         
@@ -29,12 +29,12 @@ namespace AVCLabbErikL.Controllers
 
         // List of the items in shopping cart
         public static List<ProductModel> orderList = new List<ProductModel>();
-        public static List<Adress> adressList = new List<Adress>();
+        public static List<ApplicationUsers> adressList = new List<ApplicationUsers>();
 
         // varibale to store total amount to pay
         public static double totalAmount;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpClientFactory clientFactory)
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _userManager = userManager;
@@ -121,20 +121,20 @@ namespace AVCLabbErikL.Controllers
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 // If userID don't excist site will not load any userdata
-                var getAdressinfo = from a in db.Adresses
-                                    where a.UserID == Guid.Parse(signedInUserID)
-                                    select a;
+                var getAdressinfo = from a in db.ApplicationUsers
 
+                                    where a.Id == signedInUserID.ToString()
+                                    select a;
+                
                 foreach (var item in getAdressinfo)
                 {
-                    Adress adress = new Adress();
+                    ApplicationUsers adress = new ApplicationUsers();
 
-                    adress.ID = item.ID;
                     adress.Street = item.Street;
                     adress.ZipCode = Convert.ToInt32(item.ZipCode);
                     adress.City = item.City;
                     adress.CareOf = item.CareOf;
-                    adress.UserID = item.UserID;
+                  
                     adressList.Add(adress);
                 }
                 return View();
@@ -148,10 +148,10 @@ namespace AVCLabbErikL.Controllers
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 adressList.Clear();
-                Adress adress = new Adress();
+                ApplicationUsers adress = new ApplicationUsers();
                 var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-                var checkEmptyAdress = from e in db.Adresses
+                var checkEmptyAdress = from e in db.ApplicationUsers
                                        select e;
                 if (checkEmptyAdress.Count() == 0)
                 {
@@ -162,8 +162,8 @@ namespace AVCLabbErikL.Controllers
                 {
 
 
-                    var query = from user in db.Adresses
-                                where user.UserID == Guid.Parse(signedInUserID)
+                    var query = from user in db.ApplicationUsers
+                                where user.Id == signedInUserID
                                 select user;
 
 
@@ -172,23 +172,22 @@ namespace AVCLabbErikL.Controllers
                     adress.CareOf = CareOf;
                     adress.ZipCode = ZipCode;
                     adress.City = City;
-                    adress.UserID = Guid.Parse(signedInUserID);
-                    db.Adresses.Add(adress);
+                    adress.UserId = Guid.Parse(signedInUserID);
+                    db.ApplicationUsers.Add(adress);
                     db.SaveChanges();
                 }
                 else
                 {
-                    var query = from user in db.Adresses
-                                where user.UserID == Guid.Parse(signedInUserID)
+                    var query = from user in db.ApplicationUsers
+                                where user.Id == signedInUserID
                                 select user;
 
                     foreach (var item in query)
                     {
-                        item.Street = Adress;
+                        item.Id = Adress;
                         item.CareOf = CareOf;
                         item.ZipCode = ZipCode;
                         item.City = City;
-                        item.UserID = Guid.Parse(signedInUserID);
                     }
                     db.SaveChanges();
                 }

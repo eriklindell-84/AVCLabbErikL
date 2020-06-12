@@ -10,6 +10,8 @@
     <Compile Remove="Data\Migrations\20200601090329_productService.Designer.cs" />
     <Compile Remove="Data\Migrations\20200609163953_midapipost.cs" />
     <Compile Remove="Data\Migrations\20200609163953_midapipost.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200611214639_gdpr.cs" />
+    <Compile Remove="Data\Migrations\20200611214639_gdpr.Designer.cs" />
   </ItemGroup>
 
 

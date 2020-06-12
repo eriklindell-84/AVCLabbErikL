@@ -11,12 +11,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 //namespace AVCLabbErikL.Areas.Identity.Pages.Account.Manage
 namespace AVCLabbErikL.Models
 {
-    public class Adress
+    public class ApplicationUsers : IdentityUser
     {
-        public Adress()
+        public ApplicationUsers()
         { }
 
-        public int ID { get; set; }
         [PersonalData]
         public string Street { get; set; }
         [PersonalData]
@@ -25,7 +24,8 @@ namespace AVCLabbErikL.Models
         public string CareOf { get; set; }
         [PersonalData]
         public string City { get; set; }
-        public Guid UserID { get; set; }
+        
+        public Guid UserId { get; set; }
 
         public bool isAdressEmpty;
     }

@@ -23,8 +23,8 @@ namespace AVCLabbErikL.Controllers
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUsers> _userManager;
+        private readonly SignInManager<ApplicationUsers> _signInManager;
 
         public List<OrderModel> postOrderList = new List<OrderModel>();
         public static List<OrderModel> getOrdersList = new List<OrderModel>();
@@ -34,7 +34,7 @@ namespace AVCLabbErikL.Controllers
         public bool GetOrderError { get; private set; }
         // GET: /<controller>/
 
-        public OrderController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpClientFactory clientFactory)
+        public OrderController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _userManager = userManager;
@@ -46,13 +46,13 @@ namespace AVCLabbErikL.Controllers
         {
             PlaceOrder();
 
-            return View("GetOrders", getOrdersList);
+            return View(getOrdersList);
         }
 
         public async Task OnGet()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-            "http://localhost:53445/api/Order");
+            "http://localhost:53445/Order");
             request.Headers.Add("Accept", "application/json");
             //request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
 

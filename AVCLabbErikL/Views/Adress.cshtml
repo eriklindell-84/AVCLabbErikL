@@ -1,5 +1,5 @@
-﻿
-@model IEnumerable<Adress>
+﻿@using AVCLabbErikL.Models
+@model IEnumerable<ApplicationUsers>
 @{
     ViewData["Title"] = "Adress";
 }
@@ -10,7 +10,7 @@
             @if (AVCLabbErikL.Controllers.HomeController.adressList.Count > 0 )
             {
 
-                @foreach (Adress am in AVCLabbErikL.Controllers.HomeController.adressList)
+                @foreach (ApplicationUsers am in AVCLabbErikL.Controllers.HomeController.adressList)
 
                 {
                     <div class="form-group">
