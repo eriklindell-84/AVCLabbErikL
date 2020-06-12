@@ -28,7 +28,7 @@ namespace AVCLabbErikL.Controllers
 
         public List<OrderModel> postOrderList = new List<OrderModel>();
         public static List<OrderModel> getOrdersList = new List<OrderModel>();
-
+        public static List<OrderModel> ordersList = new List<OrderModel>();
 
         public IEnumerable<OrderModel> Orders { get; private set; }
         public bool GetOrderError { get; private set; }
@@ -77,10 +77,10 @@ namespace AVCLabbErikL.Controllers
             }
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetOrdersAsync()
         {
             await OnGet();
-            return View("GetOrders", getOrdersList);
+            return View(getOrdersList);
         }
 
 
@@ -111,11 +111,12 @@ namespace AVCLabbErikL.Controllers
 
             string response = await client.GetStringAsync("http://localhost:53445/Order");
 
-            List<OrderModel> ordersList = JsonConvert.DeserializeObject<List<OrderModel>>(response);
+            
+            ordersList = JsonConvert.DeserializeObject<List<OrderModel>>(response);
 
             AVCLabbErikL.Controllers.CartController.cartList.Clear();
             AVCLabbErikL.Controllers.HomeController.totalAmount = 0;
-            return View("ConfirmOrder", postOrderList); 
+            return View(ordersList); 
         }
     }
 }

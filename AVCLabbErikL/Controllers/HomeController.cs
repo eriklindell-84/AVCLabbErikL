@@ -184,7 +184,7 @@ namespace AVCLabbErikL.Controllers
 
                     foreach (var item in query)
                     {
-                        item.Id = Adress;
+                        item.Street = Adress;
                         item.CareOf = CareOf;
                         item.ZipCode = ZipCode;
                         item.City = City;

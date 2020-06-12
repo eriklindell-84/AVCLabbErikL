@@ -15,6 +15,7 @@ namespace AVCLabbErikL.Models
         public Guid UserID { get; set; }
         public DateTime OrderDate { get; set; }
         public double OrderAmount { get; set; }
+        //public List<ProductModel> orderList { get; set; }
     }
     
 }
