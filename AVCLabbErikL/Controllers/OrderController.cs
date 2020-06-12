@@ -42,14 +42,48 @@ namespace AVCLabbErikL.Controllers
             _clientFactory = clientFactory;
 
         }
-        public IActionResult ConfirmOrder()
+        public async Task<IActionResult> ConfirmOrder()
         {
-            PlaceOrder();
+            PlaceOrder();   
 
-            return View(getOrdersList);
+            return View(postOrderList);
+        }
+        public async Task <IActionResult> GetOrders()
+        {
+            await OnGet();
+            return View(ordersList);
         }
 
-        public async Task OnGet()
+        //public async Task OnGet()
+        //{
+        //    var request = new HttpRequestMessage(HttpMethod.Get,
+        //    "http://localhost:53445/Order");
+        //    request.Headers.Add("Accept", "application/json");
+        //    //request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
+        //    var client = _clientFactory.CreateClient();
+
+        //    var response = await client.SendAsync(request);
+
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        using (var responseStream = await response.Content.ReadAsStreamAsync())
+        //        {
+        //            Orders = await System.Text.Json.JsonSerializer.DeserializeAsync
+        //            <IEnumerable<OrderModel>>(responseStream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        //            getOrdersList = Orders.ToList();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        GetOrderError = true;
+        //        Orders = Array.Empty<OrderModel>();
+        //    }
+        //}
+
+
+        public async Task <IActionResult> OnGet()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
             "http://localhost:53445/Order");
@@ -67,7 +101,7 @@ namespace AVCLabbErikL.Controllers
                 {
                     Orders = await System.Text.Json.JsonSerializer.DeserializeAsync
                     <IEnumerable<OrderModel>>(responseStream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                    getOrdersList = Orders.ToList();
+                    ordersList = Orders.ToList();
                 }
             }
             else
@@ -75,13 +109,10 @@ namespace AVCLabbErikL.Controllers
                 GetOrderError = true;
                 Orders = Array.Empty<OrderModel>();
             }
+            return View("GetOrders", ordersList);
         }
 
-        public async Task<IActionResult> GetOrdersAsync()
-        {
-            await OnGet();
-            return View(getOrdersList);
-        }
+        
 
 
         [HttpPost]
@@ -112,11 +143,11 @@ namespace AVCLabbErikL.Controllers
             string response = await client.GetStringAsync("http://localhost:53445/Order");
 
             
-            ordersList = JsonConvert.DeserializeObject<List<OrderModel>>(response);
+            //ordersList = JsonConvert.DeserializeObject<List<OrderModel>>(response);
 
             AVCLabbErikL.Controllers.CartController.cartList.Clear();
             AVCLabbErikL.Controllers.HomeController.totalAmount = 0;
-            return View(ordersList); 
+            return View(postOrderList); 
         }
     }
 }
