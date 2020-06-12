@@ -23,7 +23,7 @@ namespace AVCLabbErikL.Controllers
         private readonly SignInManager<ApplicationUsers> _signInManager;
         public IEnumerable<ProductModel> Products { get; private set; }
         public bool GetProductsError { get; private set; }
-        
+
         // List of the products
         public List<ProductModel> productList = new List<ProductModel>();
 
@@ -42,18 +42,20 @@ namespace AVCLabbErikL.Controllers
             _clientFactory = clientFactory;
 
         }
+
+        // Get the products from the Product api  through our api Gateway
         public async Task OnGet()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
                 "http://localhost:53445/Product");
             request.Headers.Add("Accept", "application/json");
-            //request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
 
             var client = _clientFactory.CreateClient();
 
             var response = await client.SendAsync(request);
 
-
+            // If Successfull, Convert the jsonData to C#object and populate our productList
             if (response.IsSuccessStatusCode)
             {
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -63,6 +65,7 @@ namespace AVCLabbErikL.Controllers
                     productList = Products.ToList();
                 }
             }
+            // If unsucessfull set Product to an empty Array
             else
             {
                 GetProductsError = true;
@@ -116,6 +119,7 @@ namespace AVCLabbErikL.Controllers
         [HttpGet]
         public IActionResult Adress()
         {
+
             adressList.Clear();
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -125,7 +129,8 @@ namespace AVCLabbErikL.Controllers
 
                                     where a.Id == signedInUserID.ToString()
                                     select a;
-                
+
+                // Setting Values for our IdentityUser address properties
                 foreach (var item in getAdressinfo)
                 {
                     ApplicationUsers adress = new ApplicationUsers();
@@ -134,17 +139,17 @@ namespace AVCLabbErikL.Controllers
                     adress.ZipCode = Convert.ToInt32(item.ZipCode);
                     adress.City = item.City;
                     adress.CareOf = item.CareOf;
-                  
+
                     adressList.Add(adress);
                 }
                 return View();
-
             }
         }
+
+        // Logic for posting the Adress to DB
         [HttpPost]
         public IActionResult Adress(string Adress, string CareOf, int ZipCode, string City)
         {
-
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 adressList.Clear();
@@ -153,11 +158,13 @@ namespace AVCLabbErikL.Controllers
 
                 var checkEmptyAdress = from e in db.ApplicationUsers
                                        select e;
+
+                // Check if adress is empty
                 if (checkEmptyAdress.Count() == 0)
                 {
                     adress.isAdressEmpty = true;
                 }
-
+                // If adress is empty Post new data to The AdressFields
                 if (adress.isAdressEmpty == true)
                 {
 
@@ -176,6 +183,7 @@ namespace AVCLabbErikL.Controllers
                     db.ApplicationUsers.Add(adress);
                     db.SaveChanges();
                 }
+                // If adress is not empty, Update the Adress
                 else
                 {
                     var query = from user in db.ApplicationUsers
@@ -191,9 +199,8 @@ namespace AVCLabbErikL.Controllers
                     }
                     db.SaveChanges();
                 }
-
-
             }
+            //Make a redirect to same page to reload page with the new info
             return RedirectToAction("Adress");
         }
     }

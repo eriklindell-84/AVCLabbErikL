@@ -16,18 +16,22 @@ namespace Order.Api.Controllers
     public class OrderController : ControllerBase
     {
         OrderRepository or = new OrderRepository();
+        
+        //Get all Orders
         [HttpGet]
         public IActionResult GetOrders()
         {
             var orderslist = or.GetOrders();
             return Ok(orderslist);
         }
+        //Get Order By ID
         [HttpGet("{Id}")]
         public IActionResult GetOrderById(int Id)
         {
             var order = or.GetOrderById(Id);
             return Ok(order);
         }
+        // Post Order Containing data from body
         [HttpPost]
         public IActionResult PlaceOrder([FromBody]Orders order)
         {

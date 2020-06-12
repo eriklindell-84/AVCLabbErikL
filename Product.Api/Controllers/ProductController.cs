@@ -13,12 +13,15 @@ namespace Product.Api.Controllers
     public class ProductController : ControllerBase
     {
         ProductRepository pr = new ProductRepository();
+        
+        //Get all Products
         [HttpGet]
         public IActionResult GetProducts()
         {
             var productlist = pr.GetProducts();
             return Ok(productlist);
         }
+        //Get Product By Id
         [HttpGet("{Id}")]
         public IActionResult GetProductById(int Id)
         {
