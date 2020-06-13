@@ -15,7 +15,7 @@ namespace Product.Api.Test
             ProductRepository pr = new ProductRepository();
             var product = pr.GetProductById(3);
 
-            Assert.Equal(product.Id, 3);
+            Assert.Equal(3, product.Id);
         }
 
         [Fact]

@@ -44,7 +44,7 @@ namespace AVCLabbErikL.Controllers
 
         public async Task<IActionResult> ConfirmOrder()
         {
-            PlaceOrder();
+            await PlaceOrder();
             return View(postOrderList);
         }
         public async Task<IActionResult> GetOrders()
@@ -56,10 +56,10 @@ namespace AVCLabbErikL.Controllers
         // Async Task to Get all previous orders
         public async Task<IActionResult> OnGet()
         {
+            
             var request = new HttpRequestMessage(HttpMethod.Get,
             "http://localhost:53445/Order");
             request.Headers.Add("Accept", "application/json");
-            //request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
 
             var client = _clientFactory.CreateClient();
 
@@ -72,7 +72,8 @@ namespace AVCLabbErikL.Controllers
                 {
                     Orders = await System.Text.Json.JsonSerializer.DeserializeAsync
                     <IEnumerable<OrderModel>>(responseStream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                    ordersList = Orders.ToList();
+                    // Filter OrderList to only display orders from signed in user
+                    ordersList = Orders.Where(x=>x.UserID == Guid.Parse(_userManager.GetUserId(User))).ToList();
                 }
             }
             // Set to Empty Array if no Match
@@ -100,13 +101,12 @@ namespace AVCLabbErikL.Controllers
                        select e;
 
             //Populate postOrderList (used for showing orderconfirmation after order is complete)
-            foreach (var item in cart)
-            {
+
                 om.OrderAmount = AVCLabbErikL.Controllers.HomeController.totalAmount;
                 om.OrderDate = DateTime.Now;
                 om.UserID = Guid.Parse(signedInUserID);
                 postOrderList.Add(om);
-            }
+            
 
             // Convert The ordermodelobject to Json and Place order through Api Gateway
             string orderobject = JsonConvert.SerializeObject(om);

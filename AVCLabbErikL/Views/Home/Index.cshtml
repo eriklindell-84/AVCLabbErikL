@@ -13,7 +13,7 @@
     @foreach (var item in Model)
     {
         <form method="post">
-            <div class="card" style="margin:5px; box-shadow:2px;">
+            <div class="card rounded overflow-hidden shadow" style="margin:5px; box-shadow:2px;">
                 <img class="card-img-top form-group" id="itemImage" src="@Html.DisplayFor(modelItem => item.ImgUrl)" />
                 <input value="@Html.DisplayFor(modelItem => item.ImgUrl)" type="hidden" name="imgUrl" />
                 <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">

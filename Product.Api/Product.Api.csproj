@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20200601090451_productService.Designer.cs" />
     <Compile Remove="Migrations\20200603094448_orderService.cs" />
     <Compile Remove="Migrations\20200603094448_orderService.Designer.cs" />
+    <Compile Remove="Migrations\20200613075420_seedproductsinprodApiNewImages.cs" />
+    <Compile Remove="Migrations\20200613075420_seedproductsinprodApiNewImages.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

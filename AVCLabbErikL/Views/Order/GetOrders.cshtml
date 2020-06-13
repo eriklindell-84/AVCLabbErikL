@@ -1,28 +1,30 @@
-﻿@model IEnumerable<OrderModel>
+﻿
+@model IEnumerable<OrderModel>
 @{
     ViewData["Title"] = "GetOrders";
 }
+
 <div class="d-flex flex-wrap">
 
     @foreach (var item in Model)
     {
- 
-            <div class="card" style="margin:5px; box-shadow:2px;">
+        
+        <div class="card rounded overflow-hidden shadow" style="margin:5px; box-shadow:2px;">
 
-                <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
-                    <ul class="list-group list-group-flush">
+            <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
+                <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item form-group" name="total" value="@Html.DisplayFor(modelItem => item.Id)">OrderID: @Html.DisplayFor(modelItem => item.Id)</li>
+                    <li class="list-group-item form-group" name="total" value="@Html.DisplayFor(modelItem => item.Id)">OrderID: @Html.DisplayFor(modelItem => item.Id)</li>
 
-                        <li class="list-group-item form-group" name="total" value="@Html.DisplayFor(modelItem => item.OrderAmount)">OrderAmount: @Html.DisplayFor(modelItem => item.OrderAmount)</li>
-
-
-                        <li class="list-group-item form-group" name="orderdate" value="@Html.DisplayFor(modelItem => item.OrderDate)">Date: @Html.DisplayFor(modelItem => item.OrderDate)</li>
+                    <li class="list-group-item form-group" name="total" value="@Html.DisplayFor(modelItem => item.OrderAmount)">OrderAmount: @Html.DisplayFor(modelItem => item.OrderAmount)</li>
 
 
-                    </ul>
-                </div>
+                    <li class="list-group-item form-group" name="orderdate" value="@Html.DisplayFor(modelItem => item.OrderDate)">Date: @Html.DisplayFor(modelItem => item.OrderDate)</li>
+
+
+                </ul>
             </div>
+        </div>
 
     }
 </div>
