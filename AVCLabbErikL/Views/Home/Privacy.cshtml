@@ -4,40 +4,109 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="d-flex flex-wrap">
-    <div class="card" style="margin:5px; box-shadow:2px;">
+    <div class="card rounded overflow-hidden shadow" style="margin:5px; box-shadow:2px;">
         <div class="card-body form-group" style="font-family: Arial, Helvetica, sans-serif">
-        Hey! Glad to see you visiting this page!
-        Privacy is an important matter and we do take it seriously, and so should you.
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item form-group">
+                    Hey! Glad to see you visiting this page!
+                    Privacy is an important matter and we do take it seriously, and so should you.
+
+                    Any information we store about you are for the purpose of devlivering
+                    our service to you.
+                    <br>
+                </li>
+                <li class="list-group-item form-group">
+                    First off, at the register account page, we ask for your consent for saving your personal data. By creating an account you give consent to us to store some personal data.
+
+                    Without your consent we are not allowed store your personal data. Unfortunatly, without it we cannot deliver our service to you.
+
+                    According to Art. 7 GDPRConditions for consent:
+                    <i> Where processing is based on consent, the controller shall be able to demonstrate that the data subject has consented to processing of his or her personal data.</i>
+                    <br>
+                    You can read all about consent here: <a href="https://gdpr-info.eu/art-7-gdpr/">GDPR Link</a>
+                </li>
 
 
-        Any information we store about you are for the purpose of devlivering
-        our service to you. According to: <a href="https://gdpr-info.eu/art-5-gdpr/"> GDPR Link </a>
+                <li class="list-group-item form-group">
+                    According to Art. 5 GDPRPrinciples relating to processing of personal data: <i> Adequate, relevant and limited to what is necessary in relation to the purposes for which they are processed (‘data minimisation’);</i>
+                    <br>
+                    This is the information we collect about you as a user:
+                    <br>
+                    <br>
+                    1: UserName. You username is stored to identify you as a user.
+                    <br>
+                    2: Email. Your email is stored for the purpose of us beeing able to contact you, should there be any issues with deliviering an order to you.
+                    <br>
+                    We also use it as primary source for restoring your password incase you should forget it.
+                    <br>
+                    3: Adress related data: Street, ZipCode, CareOf, City.
+                    <br>
+                    This data is saved for shipping purposes only.
+                    <br>
+                    4: EmailConfirmed. You need to confirm email in order to use our service.
+                    <br>
+                    5: PhoneNumber. We store your phone number to be able to contact you via phone incase we should have any issues with fullfilling our service to you.
+                    <br>
+                    The phone number is totally optional. If you would rather only be contacted via mail, ignore to enter phone number ín the Profile part of the webpage after account creation.
+                    <br>
+                    6: TwoFactorEnabled. Should the day come and you encounter issues with our service this is important for us to know so we can troubleshoot the service quicker.
+                    <br>
+                    You read the act here: <a href="https://gdpr-info.eu/art-5-gdpr/">GDPR Link</a>
+                    <br>
+                </li>
+                <li class="list-group-item form-group">
+                    According to Art. 12 GDPRTransparent information, communication and modalities for the exercise of the rights of the data subject:
+                    <i>processing to the data subject in a concise, transparent, intelligible and easily accessible form, using clear and plain language</i>
 
-          
-        The pesonal data we keep about you can be found here
-        <a href="https://localhost:44391/Identity/Account/Manage/PersonalData"> Your Personal Data</a>
-        
-      
-        With The download data you can see what information we save about you.
-       
-        At anytime you have the right to request your personal data, you also have the right to get your data modified or totally removed.
-        <a href="https://gdpr-info.eu/chapter-3/">GDPR Link</a>
+                    <a href="https://gdpr-info.eu/art-12-gdpr/"> Your rights as a Data Subject </a>
+                    <br>
+                    <br>
+                    When signed in, you can use this link to find the pesonal data we keep about you.
+                    With The download data you can see what information we save about you. With the delete button you can remove account and all your personal data will be removed
+                    <a href="https://localhost:44391/Identity/Account/Manage/PersonalData"> Your Personal Data</a>
 
-        Do note that the data we save is only used for proccesing your orders. It will never be shared to any third party.
-
-        If you any questions or concerns, don't hestite to contact us on info@picshop.com
-        <br>
+                    <br>
+                    <br>
 
 
-        
-        Have a lovely day
-        /PicShop Crew
+                    At anytime you have the right to request your personal data, you also have the right to get your data modified or totally removed.
+                    According to: Art. 15 GDPRRight of access by the data subject:
+                    <i>The data subject shall have the right to obtain from the controller confirmation as to whether or not personal data concerning him or her are being processed, and, where that is the case, access to the personal data</i>
 
+                    <br>
+                    <br>
 
+                    According to: Art. 16 GDPRRight to rectification:
+                    <i>The data subject shall have the right to obtain from the controller without undue delay the rectification of inaccurate personal data concerning him or her. 2Taking into account the purposes of the processing, the data subject shall have the right to have incomplete personal data completed, including by means of providing a supplementary statement.</i>
 
+                    <br>
+                    <br>
 
+                    According to: Art. 17 GDPRRight to erasure (‘right to be forgotten’)
+                    <i>
+                        he data subject shall have the right to obtain from the controller the erasure of personal data concerning him or her without undue delay and the controller shall have the obligation to erase personal data without undue delay where one of the following grounds applies:
+                        the personal data are no longer necessary in relation to the purposes for which they were collected or otherwise processed;
+                        the data subject withdraws consent on which the processing is based according to point (a) of Article 6(1), or point (a) of Article 9(2), and where there is no other legal ground for the processing;
+                        the data subject objects to the processing pursuant to Article 21(1) and there are no overriding legitimate grounds for the processing, or the data subject objects to the processing pursuant to Article 21(2);
+                        the personal data have been unlawfully processed;
+                        the personal data have to be erased for compliance with a legal obligation in Union or Member State law to which the controller is subject;
+                        the personal data have been collected in relation to the offer of information society services referred to in Article 8(1).
+                    </i>
 
+                    <br>
+                    <br>
+                    Do note that the data we save is only used for proccesing your orders. It will never be shared to any third party.
 
+                    If you any questions or concerns, don't hestite to contact us on info@picshop.com
+                    <br>
+                    <br>
+                    You can find the full GDPR douments here <a href="https://gdpr-info.eu/">Link To GDPR Site</a>
+                    <br>
+                    <br>
+                    Have a lovely day
+                    /PicShop Crew
+                </li>
+            </ul>
         </div>
     </div>
 </div>
