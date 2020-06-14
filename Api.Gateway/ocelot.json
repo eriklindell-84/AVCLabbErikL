@@ -36,11 +36,15 @@
       ],
       "UpstreamPathTemplate": "/PlaceOrder",
       "UpstreamHttpMethod": [ "Post" ]
-      
+
     }
   ],
 
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:53445"
+    "BaseUrl": "http://localhost:53445",
+    //"ApiKeys": {
+    //  "ProductApiKey": "MySuperSecretProductKey",
+    //  "OrderApiKey": "MySuperSecretOrderKey"
+    //}
   }
 }

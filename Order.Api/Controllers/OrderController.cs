@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Order.Api.Data;
 using Order.Api.Models;
 using Order.Api.Repository;
+using Product.Api.Filters;
 
 namespace Order.Api.Controllers
 {
+    [ApiKeyAuth]
     [Route("api/Order")]
     [ApiController]
     public class OrderController : ControllerBase

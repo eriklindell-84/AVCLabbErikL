@@ -12,15 +12,19 @@ using System.Security.Claims;
 using AVCLabbErikL.Areas.Identity.Pages.Account.Manage;
 using System.Net.Http;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Product.Api.Filters;
 
 namespace AVCLabbErikL.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _config;
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUsers> _userManager;
         private readonly SignInManager<ApplicationUsers> _signInManager;
+        
         public IEnumerable<ProductModel> Products { get; private set; }
         public bool GetProductsError { get; private set; }
 
@@ -34,28 +38,35 @@ namespace AVCLabbErikL.Controllers
         // varibale to store total amount to pay
         public static double totalAmount;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory)
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory, IConfiguration config)
         {
+            _config = config;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _clientFactory = clientFactory;
 
         }
-
+       
         // Get the products from the Product api  through our api Gateway
+        
         public async Task OnGet()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
                 "http://localhost:53445/Product");
             request.Headers.Add("Accept", "application/json");
+            //request.Headers.Add("User-Agent", "AVCLabbErikL");
 
+            var productApiKey = _config.GetValue<string>("ApiKeys:ProductApiKey");
+            request.Headers.Add("ApiKey", productApiKey);
 
             var client = _clientFactory.CreateClient();
 
             var response = await client.SendAsync(request);
 
             // If Successfull, Convert the jsonData to C#object and populate our productList
+           
+            
             if (response.IsSuccessStatusCode)
             {
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
@@ -72,7 +83,7 @@ namespace AVCLabbErikL.Controllers
                 Products = Array.Empty<ProductModel>();
             }
         }
-
+        
         public async Task<IActionResult> Index()
         {
             await OnGet();

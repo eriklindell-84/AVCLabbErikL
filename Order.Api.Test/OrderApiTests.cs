@@ -22,9 +22,9 @@ namespace Order.Api.Test
         {
 
             OrderRepository or = new OrderRepository();
-            var order = or.GetOrderById(1);
+            var order = or.GetOrderById(1034);
 
-            Assert.Equal(order.Id, 1);
+            Assert.Equal(1034, order.Id);
         }
         [Fact]
         public void GetOrders_Lenght_Equals_List_Of_Orders_Lengt()

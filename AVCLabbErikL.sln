@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Gateway", "Api.Gateway\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Product.Api.Test", "Product.Api.TestB\Product.Api.Test.csproj", "{A5695B06-E1FC-4B9A-B3F4-6ACB85194B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Api.Test", "Order.Api.Test\Order.Api.Test.csproj", "{3084864B-B697-4BA8-80A8-78BF40A1BC39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Api.Test", "Order.Api.Test\Order.Api.Test.csproj", "{3084864B-B697-4BA8-80A8-78BF40A1BC39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

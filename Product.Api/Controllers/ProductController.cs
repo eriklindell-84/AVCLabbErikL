@@ -4,17 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Product.Api.Filters;
 using Product.Api.Repository;
 
 namespace Product.Api.Controllers
 {
+    [ApiKeyAuth]
     [Route("api/Product")]
     [ApiController]
     public class ProductController : ControllerBase
     {
         ProductRepository pr = new ProductRepository();
-        
+
         //Get all Products
+       
         [HttpGet]
         public IActionResult GetProducts()
         {
@@ -28,5 +31,10 @@ namespace Product.Api.Controllers
             var productlist = pr.GetProductById(Id);
             return Ok(productlist);
         }
+        //[HttpGet]
+        //public ActionResult <string> Secret()
+        //{
+        //    return Ok("This is a secret");
+        //}
     }
 }

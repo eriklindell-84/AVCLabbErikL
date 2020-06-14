@@ -73,6 +73,7 @@ namespace AVCLabbErikL
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

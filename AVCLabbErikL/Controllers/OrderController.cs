@@ -10,6 +10,7 @@ using AVCLabbErikL.Data;
 using AVCLabbErikL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -22,9 +23,11 @@ namespace AVCLabbErikL.Controllers
     public class OrderController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUsers> _userManager;
         private readonly SignInManager<ApplicationUsers> _signInManager;
+        
 
         public List<OrderModel> postOrderList = new List<OrderModel>();
         public static List<OrderModel> getOrdersList = new List<OrderModel>();
@@ -34,8 +37,9 @@ namespace AVCLabbErikL.Controllers
         public bool GetOrderError { get; private set; }
         // GET: /<controller>/
 
-        public OrderController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory)
+        public OrderController(ILogger<HomeController> logger, UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager, IHttpClientFactory clientFactory, IConfiguration configuration)
         {
+            _configuration = configuration;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -56,11 +60,17 @@ namespace AVCLabbErikL.Controllers
         // Async Task to Get all previous orders
         public async Task<IActionResult> OnGet()
         {
-            
             var request = new HttpRequestMessage(HttpMethod.Get,
             "http://localhost:53445/Order");
             request.Headers.Add("Accept", "application/json");
 
+            //Get Api Key from Config
+            var orderApiKey = _configuration.GetValue<string>("ApiKeys:OrderApiKey");
+            
+            //Add Key To Request
+            request.Headers.Add("ApiKey", orderApiKey);
+
+            // Create the Client
             var client = _clientFactory.CreateClient();
 
             var response = await client.SendAsync(request);
@@ -111,11 +121,16 @@ namespace AVCLabbErikL.Controllers
             // Convert The ordermodelobject to Json and Place order through Api Gateway
             string orderobject = JsonConvert.SerializeObject(om);
             var content = new StringContent(orderobject, Encoding.UTF8, "application/json");
-
+            
+            // Get the apiKey
+            var orderApiKey = _configuration.GetValue<string>("ApiKeys:OrderApiKey");
+            
+            //Add The header containing the Api Key to Request
+            client.DefaultRequestHeaders.Add("ApiKey", orderApiKey);
             await client.PostAsync("http://localhost:53445/PlaceOrder", content);
-
+            
             string response = await client.GetStringAsync("http://localhost:53445/Order");
-
+            
             // Empty cartList and set Total amont back to 0 after purchase has been made
             AVCLabbErikL.Controllers.CartController.cartList.Clear();
             AVCLabbErikL.Controllers.HomeController.totalAmount = 0;
