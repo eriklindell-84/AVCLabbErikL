@@ -1,0 +1,21 @@
+
+  {
+    "Routes": [
+      {
+        "DownstreamPathTemplate": "/api/Product",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 7001
+          }
+        ],
+        "UpstreamPathTemplate": "/api/Product",
+        "UpstreamHttpMethod": [ "Get" ]
+      }
+    ],
+    "GlobalConfiguration": {
+      "BaseUrl": "https://localhost:7000"
+    }
+  }
+
